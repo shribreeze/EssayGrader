@@ -1,5 +1,7 @@
+import 'flowbite';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "EssayGrader",
-  description: "A tool to grade essays",
+  title: "EssayGrader - Your Partner in Perfect Essays",
+  description: "Our AI-powered tool provides in-depth feedback on grammar, structure, and content, helping you write essays that stand out.",
 };
 
 export default function RootLayout({ children }) {
