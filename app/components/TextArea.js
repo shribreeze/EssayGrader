@@ -29,7 +29,7 @@ export default function TextArea() {
           rows="10"
           value={essay}
           onChange={handleChange}
-          className="w-full p-4 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-red-500"
+          className="w-full p-4 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-blue-500"
           placeholder="Start writing your essay here..."
           required
         />
@@ -39,7 +39,7 @@ export default function TextArea() {
         </div>
         <button
           type="submit"
-          className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          className="bg-gradient-to-tr from-purple-800 to-blue-500 text-white px-6 py-2 rounded-lg hover:bg-gradient-to-bl hover:from-yellow-400 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
           Submit Essay
         </button>

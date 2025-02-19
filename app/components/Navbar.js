@@ -7,7 +7,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-black shadow-sm">
+    <nav className="bg-white border-gray-200 dark:border-white dark:bg-black shadow-sm">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         
         <Link href="#" className="flex items-center space-x-3">
@@ -19,9 +19,9 @@ export default function Navbar() {
             className="h-16 w-16 md:h-20 md:w-20"
             unoptimized={true}
           />
-          <span className="hidden md:block text-2xl font-bold">
-            <span className="text-red-600">Essay</span>
-            <span className="text-green-600">Grader</span>
+          <span className="hidden md:block text-2xl font-bold bg-gradient-to-r from-orange-500 to-blue-400 text-transparent bg-clip-text">  
+            <span className="">Essay</span>
+            <span className="">Grader</span>
           </span>
         </Link>
 
@@ -70,7 +70,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/"
-                className="text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 Home
               </Link>
@@ -78,7 +78,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/about"
-                className="text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 About
               </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/contact"
-                className="text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 Contact
               </Link>
@@ -97,12 +97,12 @@ export default function Navbar() {
 
      
       {menuOpen && (
-        <div className="md:hidden bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-900">
+        <div className="md:hidden bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-black">
           <ul className="flex flex-col p-4 space-y-3">
             <li>
               <Link
                 href="/"
-                className="block text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="block text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 Home
               </Link>
@@ -110,7 +110,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/about"
-                className="block text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="block text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 About
               </Link>
@@ -118,7 +118,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/contact"
-                className="block text-gray-700 hover:text-green-700 dark:text-white dark:hover:text-green-500"
+                className="block text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500"
               >
                 Contact
               </Link>

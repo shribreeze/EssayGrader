@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .tagLine-1 {
+    color: linear-gradient(90deg, #f12711, #f5af19);
+  }
+  .tagLine-2 {
+    
+  }
+}
