@@ -43,12 +43,10 @@ export default function Home() {
             <span
               className="tagLine-1 font-extrabold bg-gradient-to-r from-yellow-400 to-orange-700 text-transparent bg-clip-text min-h-[72px] md:min-h-[86px]"
             >
-            {text || "‎"} {/* Invisible character when text is empty */}
+            {text || "‎"}
           </span>
         </p>
-
-
-
+        
         <p className="text-sm md:text-lg mb-6 mx-1">
           &quot;Whether you are a student or teacher, EssayGrader helps craft
           well-structured essays with personalized feedback and actionable
