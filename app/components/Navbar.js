@@ -7,7 +7,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-gray-200 dark:border-white dark:bg-black shadow-sm">
+    <nav className="bg-pink-50 border-gray-200 dark:border-white dark:bg-[--background] shadow-sm">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         
         <Link href="#" className="flex items-center space-x-3">

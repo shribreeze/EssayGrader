@@ -4,7 +4,7 @@ import 'flowbite';
 import Navbar from "./components/Navbar";
 import TextArea from './components/TextArea';
 
-const texts = ["EssayGrader", "AI Grader", "Smart Checker"];
+const texts = ["Essay Grader", "AI Grader", "Smart Checker"];
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -13,7 +13,7 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const typingSpeed = isDeleting ? 50 : 100; // Typing speed
+    const typingSpeed = isDeleting ? 50 : 100;
     const currentText = texts[index];
 
     const timer = setTimeout(() => {
@@ -46,7 +46,7 @@ export default function Home() {
             {text || "‎"}
           </span>
         </p>
-        
+
         <p className="text-sm md:text-lg mb-6 mx-1">
           &quot;Whether you are a student or teacher, EssayGrader helps craft
           well-structured essays with personalized feedback and actionable

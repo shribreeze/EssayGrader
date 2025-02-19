@@ -29,7 +29,7 @@ export default function TextArea() {
           rows="10"
           value={essay}
           onChange={handleChange}
-          className="w-full p-4 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-blue-500"
+          className="w-full p-4 border bg-gray-100 border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-blue-500"
           placeholder="Start writing your essay here..."
           required
         />
