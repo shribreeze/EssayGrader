@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -91,6 +92,15 @@ export default function Navbar() {
                 Contact
               </Link>
             </li>
+            <SignedOut>
+              <li>
+                <SignInButton className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500" />
+              </li>
+              </SignedOut>
+            
+              <SignedIn>
+                <UserButton /> 
+              </SignedIn>
           </ul>
         </div>
       </div>
@@ -123,6 +133,20 @@ export default function Navbar() {
                 Contact
               </Link>
             </li>
+            
+              <SignedOut>
+              <li>
+                <SignInButton className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500" />
+              </li>
+              <li>
+                <SignUpButton className="text-gray-700 hover:text-orange-700 dark:text-white dark:hover:text-orange-500" />
+              </li>
+              </SignedOut>
+            
+              <SignedIn>
+                <UserButton /> 
+              </SignedIn>
+            
           </ul>
         </div>
       )}
