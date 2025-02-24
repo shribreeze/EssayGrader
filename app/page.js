@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import 'flowbite';
 import Navbar from "./components/Navbar";
 import TextArea from './components/TextArea';
+import Footer from "./components/Footer";
 
 const texts = ["Essay Grader", "AI Grader", "Smart Checker"];
 
@@ -55,6 +56,7 @@ export default function Home() {
 
         <TextArea />
       </div>
+      <Footer />
     </>
   );
 }
