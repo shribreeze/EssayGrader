@@ -2,11 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    console.log("📌 Received a request to /api/gemini"); // Log request received
-
     const { essay } = await req.json();
-    console.log("📝 Essay received:", essay); // Log the received essay
-
     if (!essay) {
       console.error("❌ Error: Essay is missing in the request body.");
       return NextResponse.json({ error: "Essay is required" }, { status: 400 });
@@ -18,8 +14,6 @@ export async function POST(req) {
       console.error("❌ Error: GEMINI_API_KEY is missing in .env.local file.");
       return NextResponse.json({ error: "Server misconfiguration" }, { status: 500 });
     }
-
-    console.log("🔑 Using API Key:", API_KEY.substring(0, 6) + "********"); // Mask API Key
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
@@ -33,7 +27,6 @@ export async function POST(req) {
     );
 
     const data = await response.json();
-    console.log("✅ Gemini API Response:", JSON.stringify(data, null, 2)); // Log API response
 
     if (!response.ok) {
       console.error("❌ Gemini API Error:", data);
