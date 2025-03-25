@@ -10,7 +10,16 @@ export default function TextArea() {
   const [loading, setLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [feedback, setFeedback] = useState({
+    clarity: "",
+    argumentStrength: "",
+    grammar: "",
+    structure: "",
+    creativity: "",
+    overallScore: "",
+  });
 
+  // Drag and drop handlers (same as before)
   useEffect(() => {
     const handleDragOver = (e) => {
       e.preventDefault();
@@ -43,6 +52,7 @@ export default function TextArea() {
 
   const handleChange = (e) => setEssay(e.target.value);
 
+  // File upload handlers (same as before)
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -82,11 +92,13 @@ export default function TextArea() {
     };
   };
 
+  // Updated submit handler with proper feedback parsing
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResult("");
-    const prompt = `Analyze the essay based on clarity, argument strength, grammar, structure, and creativity:\n\n${essay}`;
+
+    const prompt = `Grade this essay based on clarity, argument strength, grammar, structure, and creativity, providing a score out of 100 with detailed feedback and improvement suggestions:\n\n${essay}`;
 
     try {
       const res = await fetch("/api/gemini", {
@@ -95,19 +107,48 @@ export default function TextArea() {
         body: JSON.stringify({ essay: prompt }),
       });
 
-      if (!res.ok) {
-        setResult("Something went wrong. Please try again.");
-        return;
-      }
-
+      if (!res.ok) throw new Error("Failed to fetch feedback");
+      
       const data = await res.json();
-      setResult(data.candidates?.[0]?.content?.parts?.[0]?.text || "No response from AI.");
+      const feedbackText = data.candidates[0].content.parts[0].text;
+      
+
+      // Improved parser with better regex patterns
+      const parseSection = (title) => {
+        const escapedTitle = title.replace(/ /g, '\\s*'); // Handle spaces in titles
+        const pattern = `\\*\\*${escapedTitle}:\\*\\*\\s*([\\d/]+)\\n\\n([\\s\\S]*?)(?=\\n\\n\\*\\*|\\n\\*\\*|$)`;
+        const regex = new RegExp(pattern, 's');
+        const match = feedbackText.match(regex);
+        
+        if (match) {
+          const score = match[1];
+          const description = match[2].trim()
+            .replace(/\n/g, ' ')    // Replace newlines with spaces
+            .replace(/  +/g, ' ');  // Collapse multiple spaces
+          return `${score}\n${description}`;
+        }
+        return `No ${title.toLowerCase()} feedback available`;
+      };
+
+      setFeedback({
+        clarity: parseSection("Clarity"),
+        argumentStrength: parseSection("Argument Strength"),
+        grammar: parseSection("Grammar"),
+        structure: parseSection("Structure"),
+        creativity: parseSection("Creativity"),
+        overallScore: (feedbackText.match(/Essay Grade:\s*(\d+\/100)/) || [])[1] || "N/A"
+      });
+
+      setResult(feedbackText);
     } catch (error) {
-      setResult("An error occurred while generating the response.");
+      console.error("Error:", error);
+      setResult("Error generating feedback. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  const cleanResult = result.replace(/\*\*/g, "").replace(/\n\n/g, "\n"); 
 
   return (
     <div className="relative flex flex-col items-center justify-center">
@@ -118,6 +159,7 @@ export default function TextArea() {
           </div>
         </div>
       )}
+
       <div className="w-full max-w-2xl p-2 rounded-lg">
         <form onSubmit={handleSubmit} className="space-y-4">
           <textarea
@@ -129,21 +171,94 @@ export default function TextArea() {
             placeholder="Start writing your essay here..."
             required
           />
-          <input type="file" accept=".pdf, .docx" onChange={handleFileUpload} className="w-full p-2 border border-orange-500 rounded-md" />
-          <button type="submit" className="bg-gradient-to-tr from-purple-800 to-blue-500 text-white px-6 py-2 rounded-lg hover:bg-gradient-to-bl hover:from-yellow-400 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-blue-300" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Essay"}
+          <input
+            type="file"
+            accept=".pdf, .docx"
+            onChange={handleFileUpload}
+            className="w-full p-2 border border-orange-500 rounded-md cursor-pointer"
+          />
+          <button
+            type="submit"
+            className="bg-gradient-to-tr from-purple-800 to-blue-500 text-white px-6 py-2 rounded-lg hover:bg-gradient-to-bl hover:from-yellow-400 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            disabled={loading}
+          >
+            {loading ? "Analyzing..." : "Get Feedback"}
           </button>
         </form>
       </div>
 
-      <div className="mt-6 p-6 border rounded-lg w-full max-w-2xl">
-        <h2 className="text-2xl font-bold">📄 Feedback</h2>
-        <p className="mt-3">{result.split(".")[0]}...</p>
-        <button onClick={() => setShowDetails(!showDetails)} className="mt-3 text-blue-600 hover:underline">
-          {showDetails ? "Hide Details" : "Show More"}
-        </button>
-        {showDetails && <p className="mt-3 whitespace-pre-line">{result}</p>}
-      </div>
+      {result && (
+        <div className="mt-6 p-6 border rounded-lg w-full max-w-2xl space-y-6">
+          {/* Overall Score */}
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h3 className="text-xl font-bold text-blue-800">Overall Score</h3>
+            <p className="text-3xl font-bold text-blue-600 mt-2">
+              {feedback.overallScore}
+            </p>
+          </div>
+
+          {/* Feedback Categories */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <FeedbackCard
+              title="Clarity"
+              content={feedback.clarity}
+              color="green"
+            />
+            <FeedbackCard
+              title="Argument Strength"
+              content={feedback.argumentStrength}
+              color="purple"
+            />
+            <FeedbackCard
+              title="Grammar"
+              content={feedback.grammar}
+              color="red"
+            />
+            <FeedbackCard
+              title="Structure"
+              content={feedback.structure}
+              color="yellow"
+            />
+            <FeedbackCard
+              title="Creativity"
+              content={feedback.creativity}
+              color="pink"
+            />
+          </div>
+
+          {/* Full Feedback Toggle */}
+          <div className="mt-6">
+            <button
+              onClick={() => setShowDetails(!showDetails)}
+              className="text-blue-600 hover:underline"
+            >
+              {showDetails ? "Hide Full Report" : "Show Full Report"}
+            </button>
+            {showDetails && (
+              <div className="mt-4 p-4 bg-black rounded-lg whitespace-pre-line">
+                {cleanResult}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FeedbackCard({ title, content, color }) {
+  const colorClasses = {
+    green: "bg-green-50 border-green-200 text-green-800",
+    purple: "bg-purple-50 border-purple-200 text-purple-800",
+    red: "bg-red-50 border-red-200 text-red-800",
+    yellow: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    pink: "bg-pink-50 border-pink-200 text-pink-800",
+  };
+
+  return (
+    <div className={`${colorClasses[color]} p-4 rounded-lg border`}>
+      <h4 className="font-semibold mb-2">{title}</h4>
+      <p className="whitespace-pre-line text-sm">{content}</p>
     </div>
   );
 }
